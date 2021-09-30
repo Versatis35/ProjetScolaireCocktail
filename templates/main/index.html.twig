@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une boisson
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des cocktails</h1>
+
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Cocktail</th>
+			<th>fruit</th>
+			<th>Couleur</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for c in cocktails %}
+		<tr>
+			<td>{{ c.nom }}</td>
+			<td>{{ c.fruit.nom }}</td>
+			<td>{{ c.fruit.couleur.nom }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}

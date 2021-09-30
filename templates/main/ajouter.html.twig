@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une boisson
+{% endblock %}
+
+{% block body %}
+    <h1>Ajouter</h1>
+    {{ form_start(formCocktail) }}
+    <div class="col-3">
+        {{ form_widget(formCocktail) }}
+        <label class="form-label" for="selectCouleur">Couleur</label>
+        <select class="form-select" name="couleur" id="selectCouleur" onchange="genererFruit(this.value)">
+        </select>
+        <br/>
+        <label class="form-label" for="selectFruit">Fruit</label>
+        <select class="form-select" name="fruits" id="selectFruit">
+        </select>
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+
+    </div>
+    {{ form_end(formCocktail) }}
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let selectCouleur = document.getElementById("selectCouleur");
+        let selectFruit = document.getElementById("selectFruit");
+        let url= 'http://localhost/ENI/__symfony/TPrecap/public/api/couleur/';
+        axios.get(url).then( response => {
+            let tableau = response.data;
+            console.log(tableau);
+            for(let couleur of tableau) {
+                let opt = document.createElement("option");
+                opt.value = couleur.id;
+                opt.setAttribute("label",couleur.nom);
+                if(selectCouleur.childElementCount === 0) {
+                    genererFruit(couleur.id);
+                }
+                selectCouleur.appendChild(opt);
+            }
+        });
+        function genererFruit(couleur){
+            console.log("valeur "+couleur);
+            selectFruit.innerText = "";
+            let url= 'http://localhost/ENI/__symfony/TPrecap/public/api/fruits/';
+            axios.get(url).then( response => {
+                let tableau = response.data;
+                for(let fruit of tableau) {
+                    if(fruit.couleur.id == couleur) {
+                        let opt = document.createElement("option");
+                        opt.value = fruit.id;
+                        opt.setAttribute("label",fruit.nom);
+                        selectFruit.appendChild(opt);
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}
